@@ -61,7 +61,7 @@ public class Controller {
         Color c = b.fillings.get(rand.nextInt(b.fillings.size()-2)+2);
         Shapes s = val.get(rand.nextInt(val.size()));
         Tetrimino t = new Tetrimino(c, s);
-        b.activateField(t.getX(), t.getY(), t.getColor());
+        t.changeColor(b, t.getColor());
         return t;
     }
 
