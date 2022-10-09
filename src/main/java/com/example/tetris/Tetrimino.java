@@ -5,8 +5,6 @@ import com.example.tetris.shapes.TetraminoShape;
 import javafx.fxml.FXML;
 import javafx.scene.paint.Color;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,8 +23,20 @@ public class Tetrimino {
         this.shape = new TetraminoShape(s);
         this.shapeTab = Arrays.asList(shape.getActShape());
     }
-    public void rotate(){
-        shapeTab = Arrays.asList(shape.rotate());
+    public void rotate(Board b){
+        changeColor(b, Color.BLACK);
+        var tmp = Arrays.asList(shape.rotate());
+        boolean result = true;
+        for(var pos: tmp){
+            result &= ! b.isFilled(x+pos[0], y+pos[1]);
+        }
+        if(result){
+            shapeTab = tmp;
+        }
+        else{
+            shape.reverseRotation();
+        }
+        changeColor(b, color);
     }
     public int getX() {
         return x;
@@ -46,15 +56,19 @@ public class Tetrimino {
                 if(x == 0){
                     result = false;
                 }
-                else if(b.isFilled(x-1, y)){
+                else if(!canMove(b, -1, 0)){
                     result = false;
                 }
             }
             else{
-                if(x == 9){
+                int furthest = -1;
+                for(int[] pos: shapeTab){
+                    furthest = Math.max(furthest, pos[0]);
+                }
+                if(x+furthest == 9){
                     result = false;
                 }
-                else if(b.isFilled(x+1, y)){
+                else if(!canMove(b, 1, 0)){
                     result = false;
                 }
             }
@@ -66,7 +80,6 @@ public class Tetrimino {
         changeColor(b, color);
     }
     public boolean canFall(Board b){
-        boolean result = true;//for each in shape
         int lowest = -1;
         for(int[] pos: shapeTab){
             lowest = Math.max(lowest, pos[1]);
@@ -74,9 +87,16 @@ public class Tetrimino {
         if(y+lowest == 19){
             return false;
         }
+        return canMove(b, 0, 1);
+
+
+    }
+
+    private boolean canMove(Board b, int dir_x, int dir_y) {
+        boolean result = true;
         for(int[] pos: shapeTab){
             int[] tmp = new int[2];
-            tmp[0] = pos[0]; tmp[1] = pos[1]+1;
+            tmp[0] = pos[0]+dir_x; tmp[1] = pos[1]+dir_y;
             boolean contains = false;
             for (int[] test: shapeTab) {
                 if(Arrays.equals(test, tmp)){
@@ -84,10 +104,9 @@ public class Tetrimino {
                 }
             }
             if(!contains){
-                result &= !b.isFilled(x+pos[0], y+pos[1] + 1);
+                result &= !b.isFilled(x+pos[0] +dir_x, y+pos[1] + dir_y);
             }
         }
-
         return result;
     }
 

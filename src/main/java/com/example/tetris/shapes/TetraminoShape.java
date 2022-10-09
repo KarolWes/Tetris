@@ -153,4 +153,7 @@ public class TetraminoShape {
         actRot = (actRot+1)%rotations.size();
         return rotations.get(actRot);
     }
+    public void reverseRotation(){
+        actRot = (actRot-1)%rotations.size();
+    }
 }

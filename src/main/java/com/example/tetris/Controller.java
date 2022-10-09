@@ -17,7 +17,7 @@ public class Controller {
     private Board b;
     private boolean left = false, right = false, rotate = false;
     private  int frames = 0;
-    private final int frameLimit = 5;
+    private final int frameLimit = 20;
     private Tetrimino fallingBlock;
     public Random rand;
     private static final List<Shapes> val = List.of(Shapes.values());
@@ -76,6 +76,10 @@ public class Controller {
         if(right){
             fallingBlock.move(1, b);
             right = false;
+        }
+        if(rotate){
+            rotate = false;
+            fallingBlock.rotate(b);
         }
     }
 
