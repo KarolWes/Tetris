@@ -28,7 +28,13 @@ public class Tetrimino {
         var tmp = Arrays.asList(shape.rotate());
         boolean result = true;
         for(var pos: tmp){
-            result &= ! b.isFilled(x+pos[0], y+pos[1]);
+            if(x+pos[0] < 10){
+                result &= ! b.isFilled(x+pos[0], y+pos[1]);
+            }
+            else{
+                result = false;
+            }
+
         }
         if(result){
             shapeTab = tmp;
@@ -118,5 +124,16 @@ public class Tetrimino {
         for(int[] pos: shapeTab){
             b.activateField(x+pos[0], y+pos[1], newColor);
         }
+    }
+    public TetraminoShape getShape(){
+        return shape;
+    }
+
+    public boolean testEnd(Board b) {
+        boolean result = false;
+        for(var pos : shapeTab){
+            result |= b.isFilled(x+pos[0], y+pos[1]);
+        }
+        return result;
     }
 }

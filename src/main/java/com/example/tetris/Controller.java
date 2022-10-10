@@ -1,29 +1,32 @@
 package com.example.tetris;
 
 import com.example.tetris.shapes.Shapes;
+import com.example.tetris.shapes.TetraminoShape;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Controller {
     private Board b;
     private boolean left = false, right = false, rotate = false;
     private  int frames = 0;
-    private final int frameLimit = 20;
+    private final int frameLimit = 1;
     private Tetrimino fallingBlock;
     public Random rand;
+    private Color lastColor = Color.BLACK;
     private static final List<Shapes> val = List.of(Shapes.values());
 
     @FXML
     private Pane mainWindow;
+    @FXML
+    private Text endGameBaner;
     public void initialize(){
         rand = new Random();
         b = new Board(50, 50, mainWindow);
@@ -53,20 +56,44 @@ public class Controller {
         if(!fallingBlock.canFall(b)){
             b.endCheck();
             fallingBlock = generateNewBlock();
+            if(Objects.isNull(fallingBlock)){
+                endGame();
+            }
+
         }
         return  true;
     }
 
+    private void endGame() {
+        timer.stop();
+        endGameBaner = new Text("Game Over");
+        endGameBaner.setX(100);
+        endGameBaner.setY(200);
+        endGameBaner.setFill(Color.AZURE);
+        endGameBaner.setFont(Font.font(24));
+        mainWindow.getChildren().add(endGameBaner);
+    }
+
     private Tetrimino generateNewBlock() {
         Color c = b.fillings.get(rand.nextInt(b.fillings.size()-2)+2);
+        while(c == lastColor){
+            c = b.fillings.get(rand.nextInt(b.fillings.size()-2)+2);
+        }
+        lastColor = c;
         Shapes s = val.get(rand.nextInt(val.size()));
         Tetrimino t = new Tetrimino(c, s);
+        if(t.testEnd(b)){
+            return null;
+        }
         t.changeColor(b, t.getColor());
         return t;
     }
 
     private void gravity() {
-        fallingBlock.move(0, b);
+        if(fallingBlock != null){
+            fallingBlock.move(0, b);
+        }
+
     }
     private void movement(){
         if(left){

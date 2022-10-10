@@ -53,10 +53,10 @@ public class TetraminoShape {
                 shape[3][0] = 2; shape[3][1] = 1;
                 rotations.add(shape);
                 shape = new int[4][2];
-                shape[0][0] = 0; shape[0][1] = 0;
-                shape[1][0] = 1; shape[1][1] = 0;
-                shape[2][0] = 1; shape[2][1] = 1;
-                shape[3][0] = 1; shape[3][1] = 2;
+                shape[0][0] = 1; shape[0][1] = 0;
+                shape[1][0] = 1; shape[1][1] = 1;
+                shape[2][0] = 1; shape[2][1] = 2;
+                shape[3][0] = 0; shape[3][1] = 2;
                 rotations.add(shape);
                 shape = new int[4][2];
                 shape[0][0] = 0; shape[0][1] = 0;
@@ -65,14 +65,14 @@ public class TetraminoShape {
                 shape[3][0] = 2; shape[3][1] = 1;
                 rotations.add(shape);
             }
-            case S -> {
+            case Z -> {
                 shape[0][0] = 1; shape[0][1] = 0;
                 shape[1][0] = 2; shape[1][1] = 0;
                 shape[2][0] = 0; shape[2][1] = 1;
                 shape[3][0] = 1; shape[3][1] = 1;
                 rotations.add(shape);
             }
-            case Z -> {
+            case S -> {
                 shape[0][0] = 1; shape[0][1] = 0;
                 shape[1][0] = 0; shape[1][1] = 1;
                 shape[2][0] = 1; shape[2][1] = 1;
