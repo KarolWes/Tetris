@@ -5,6 +5,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -94,6 +95,7 @@ public class Board {
     }
     private void moveDown(){
         int destroyed = 0;
+        Collections.reverse(toDestroy);
         for(int i: toDestroy){
             for(int m = i+destroyed; m > 0; m--){
                 for(int j = 0; j < x; j++){
