@@ -4,8 +4,10 @@ import com.example.tetris.shapes.Shapes;
 import com.example.tetris.shapes.TetraminoShape;
 import javafx.animation.AnimationTimer;
 import javafx.css.Size;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -37,13 +39,17 @@ public class Controller {
     private Text pointsText;
     @FXML
     private Rectangle plane;
+    @FXML
+    private Button button;
     public void initialize(){
         title = new Text(150, 45, "Tetris");
         title.setFont(Font.font("Verdana", FontWeight.BOLD, 40));
         mainWindow.getChildren().add(title);
+
         pointsText = new Text(150, 780,"Points: " + String.valueOf(points));
         pointsText.setFont(Font.font(25));
         mainWindow.getChildren().add(pointsText);
+
         rand = new Random();
         b = new Board(50, 50, mainWindow);
         fallingBlock = generateNewBlock();
@@ -95,6 +101,28 @@ public class Controller {
         endGameBaner.setFill(Color.NAVY);
         endGameBaner.setFont(Font.font(24));
         mainWindow.getChildren().add(endGameBaner);
+
+        button = new Button("Try Again");
+        button.setLayoutX(170);
+        button.setLayoutY(450);
+        mainWindow.getChildren().add(button);
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                resetGame();
+            }
+        });
+    }
+
+    private void resetGame() {
+        points = 0;
+        pointsText.setText("Points: " + String.valueOf(points));
+        mainWindow.getChildren().remove(button);
+        mainWindow.getChildren().remove(plane);
+        mainWindow.getChildren().remove(endGameBaner);
+        b.resetBoard();
+        fallingBlock = generateNewBlock();
+        timer.start();
     }
 
     private Tetrimino generateNewBlock() {

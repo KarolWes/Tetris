@@ -113,4 +113,13 @@ public class Board {
         moveDown();
         return points;
     }
+    public void resetBoard(){
+        for (int i = 0; i < x; i++) {
+            for(int j = 0; j < y; j++){
+                boardMath[i][j] = false;
+                boardFields[i][j].changeColor(Color.BLACK);
+            }
+
+        }
+    }
 }
