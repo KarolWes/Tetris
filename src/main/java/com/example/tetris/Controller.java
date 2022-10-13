@@ -22,7 +22,7 @@ public class Controller {
     private Board b;
     private boolean left = false, right = false, rotate = false;
     private  int frames = 0;
-    private final int frameLimit = 1;
+    private final int frameLimit = 5;
     private Tetrimino fallingBlock;
     private int points = 0;
     public Random rand;
@@ -65,29 +65,35 @@ public class Controller {
 
                 frames = 0;
                 try {
-                    check();
+                    if(check())
+                    {
+                        gravity();
+                    }
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                gravity();
+
             }
         }
     };
 
     private boolean check() throws InterruptedException {
+        boolean res = true;
         if(!fallingBlock.canFall(b)){
             points += b.endCheck()*8;
             fallingBlock = generateNewBlock();
             if(Objects.isNull(fallingBlock)){
                 endGame();
+                res = false;
             }
             else{
                 points++;
+                res = false;
             }
 
         }
         pointsText.setText("Points: " + String.valueOf(points));
-        return  true;
+        return res;
     }
 
     private void endGame() {
