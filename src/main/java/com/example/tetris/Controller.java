@@ -22,7 +22,7 @@ public class Controller {
     private Board b;
     private boolean left = false, right = false, rotate = false;
     private  int frames = 0;
-    private final int frameLimit = 5;
+    private final int frameLimit = 10;
     private Tetrimino fallingBlock;
     private int points = 0;
     public Random rand;
